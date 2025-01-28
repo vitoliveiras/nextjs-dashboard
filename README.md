@@ -114,3 +114,27 @@ export default function InvoiceStatus({ status }: { status: string }) {
     // ...
 )}
 ```
+
+## Chapter 3: Optimizing Fonts and Images
+
+### Understanding next/font
+*When using next/font module, Next.js automatically optimizes fonts in the application, because it downloads font files at build time and hosts them with your other static assets (this means when a user visits your application, there are no additional newtwork requests for fonts).*
+
+### Adding fonts to application
+Creating *fonts.ts* file at the */app/ui* folder. Later, import and export the fonts to be used in the application, like this:
+```
+import { Inter } from 'next/font/google';
+ 
+export const inter = Inter({ subsets: ['latin'] });
+```
+Now, the Inter font can be imported and used at any component.
+
+### Uderstanding Image component
+*The Image component is a extension of the HTML img tag, and comes with automatic image optmization, such:*
+- Preventing layout shift automatically when images are loading
+- Resizing images to avoid shipping large images to devices with a smaller viewport
+- Lazy loading images by default (images load as they enter the viewport)
+- Serving images in modern formats (WebP and AVIF), when the browser supports it
+
+*Important:*
+It's a good practice to set the width and height of images to avoid layout shift, these should be an aspect ratio *identical* to the source image. These values are *not* the size image is rendered, but instead the size of the actual image file used to understanding the aspect ratio.
