@@ -139,6 +139,19 @@ Now, the Inter font can be imported and used at any component.
 *Important:*
 It's a good practice to set the width and height of images to avoid layout shift, these should be an aspect ratio *identical* to the source image. These values are *not* the size image is rendered, but instead the size of the actual image file used to understanding the aspect ratio.
 
+## Chapter 4: Creating Layouts and Pages
+
+### Understanding Layout function
+
+*This function defines a layout that will nest all pages in the directory where it is defined.*
+
+*For example, it can be used in the app/dashboard to share a SideNav with all pages in this directory.*
+
+### Understanding RootLayout function
+*This function is **required** in every Next.js application, and any UI added to the root layout will be shared across **all** pages of the application.*
+
+*It can be used to modify HTML and body tags, and add metadata.*
+
 ## Chapter 5: Navigating Between Pages
 
 ### Optimizing navigation
