@@ -138,3 +138,14 @@ Now, the Inter font can be imported and used at any component.
 
 *Important:*
 It's a good practice to set the width and height of images to avoid layout shift, these should be an aspect ratio *identical* to the source image. These values are *not* the size image is rendered, but instead the size of the actual image file used to understanding the aspect ratio.
+
+## Chapter 5: Navigating Between Pages
+
+### Optimizing navigation
+
+Instead of using an HTML tag to navigate between pages, use the Link component from next/link.
+
+❌ Using the HTML component: the page always refreshes after a click;<br>
+✅ Using the Link component from next/link: navigate between the pages without seeing a full refresh.
+
+*💡 To improve the navigation experience, Next.js automatically code splits your application by route segments. This is different from a traditional Reat SPA, where the browser loads all your application code on the initial load.*
