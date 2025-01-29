@@ -1,6 +1,16 @@
-# Learn Next.js
+# Learn Next.js Course
 
-## About Project
+## Table of Content
+1. [About the Project](#about-the-project)
+2. [Overview](#overview)
+3. [Chapter 1: Getting Started](#chapter-1-getting-started)
+4. [Chapter 2: CSS Styling](#chapter-2-css-styling)
+5. [Chapter 3: Optimizing Fonts and Images](#chapter-3-optimizing-fonts-and-images)
+6. [Chapter 4: Creating Layouts and Pages]()
+7. [Chapter 5: Navigating Between Pages](#chapter-5-navigating-between-pages)
+8. [Chapter 6: Setting Up Your Database](#chapter-6-setting-up-your-database)
+
+## About the Project
 
 Financial dashboard that has:
 1. A public home page;
@@ -15,8 +25,8 @@ By the end of the course, you'll have the essential skills needed to start build
 
 ## Overview
 
-- Styles: The diferente ways to style yout application in Next.js;
-- Optimizations: HOw to optimize images, links and fonts;
+- Styles: The different ways to style yout application in Next.js;
+- Optimizations: How to optimize images, links and fonts;
 - Routing: How to create nested layouts and pages using file-system routing;
 - Data Fetching: How to set up a Postgres database on Vercel, and best practices for teaching and streaming;
 - Search and Pagination: How to implemente search and pagination using URL search params;
