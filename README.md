@@ -149,3 +149,14 @@ Instead of using an HTML tag to navigate between pages, use the Link component f
 ✅ Using the Link component from next/link: navigate between the pages without seeing a full refresh.
 
 *💡 To improve the navigation experience, Next.js automatically code splits your application by route segments. This is different from a traditional Reat SPA, where the browser loads all your application code on the initial load.*
+
+## Chapter 6: Setting Up Your Database
+
+### Deploying the project with Vercel
+- Whenever you push changes to your **main** branch, Vercel will automatically redeploy your application with no configuration needed 
+- When opening pull requests, you'll also have a instant preview URLs which allow to catch deployment errors early and share a preview of your project with the team members for feedback
+
+### Lessons Learned
+1. How to deploy a Project using Vercel;
+2. How to connect with a PostgreSQL database;
+3. Review of SQL commands, such as *CREATE TABLE* and *INSERT*, for creating tables and populating them based on *placeholder-data.ts* file.
