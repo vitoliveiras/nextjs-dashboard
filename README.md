@@ -183,3 +183,5 @@ Instead of using an HTML tag to navigate between pages, use the Link component f
 1. How to deploy a Project using Vercel;
 2. How to connect with a PostgreSQL database;
 3. Review of SQL commands, such as *CREATE TABLE* and *INSERT*, for creating tables and populating them based on *placeholder-data.ts* file.
+
+**How to connect to a local PostgreSQL database: tutorial available [here](https://medium.com/@dekadekadeka/next-js-tutorial-with-local-database-quick-start-guide-394d48a0aada).**
