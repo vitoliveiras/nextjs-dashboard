@@ -8,6 +8,7 @@ export default function Layout({children} : {children: React.ReactNode}) {
                 {/* That means all pages in the app/dashboard will have a sidebar nav */}
                 <SideNav />
             </div>
+            <div className="flex-grow p-6 md:overflow-y-auto md:p-12">{children}</div>
         </div>
     );
 }
