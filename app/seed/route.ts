@@ -28,31 +28,30 @@ async function seedUsers() {
   return insertedUsers;
 }
 
-// async function seedInvoices() {
-//   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+async function seedInvoices() {
+  await connectionPool.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`);
+  await connectionPool.query(`
+    CREATE TABLE IF NOT EXISTS invoices (
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      customer_id UUID NOT NULL,
+      amount INT NOT NULL,
+      status VARCHAR(255) NOT NULL,
+      date DATE NOT NULL
+    );
+  `);
 
-//   await client.sql`
-//     CREATE TABLE IF NOT EXISTS invoices (
-//       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-//       customer_id UUID NOT NULL,
-//       amount INT NOT NULL,
-//       status VARCHAR(255) NOT NULL,
-//       date DATE NOT NULL
-//     );
-//   `;
+  const insertedInvoices = await Promise.all(
+    invoices.map(
+      (invoice) => connectionPool.query(`
+        INSERT INTO invoices (customer_id, amount, status, date)
+        VALUES ('${invoice.customer_id}', ${invoice.amount}, '${invoice.status}', '${invoice.date}')
+        ON CONFLICT (id) DO NOTHING;
+      `),
+    ),
+  );
 
-//   const insertedInvoices = await Promise.all(
-//     invoices.map(
-//       (invoice) => client.sql`
-//         INSERT INTO invoices (customer_id, amount, status, date)
-//         VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${invoice.date})
-//         ON CONFLICT (id) DO NOTHING;
-//       `,
-//     ),
-//   );
-
-//   return insertedInvoices;
-// }
+  return insertedInvoices;
+}
 
 // async function seedCustomers() {
 //   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
@@ -102,16 +101,13 @@ async function seedUsers() {
 
 export async function GET() {
   try {
-    // await client.sql`BEGIN`;
     await seedUsers();
     // await seedCustomers();
-    // await seedInvoices();
+    await seedInvoices();
     // await seedRevenue();
-    // await client.sql`COMMIT`;
 
     return Response.json({ message: 'Database seeded successfully' });
   } catch (error) {
-    // await client.sql`ROLLBACK`;
     return Response.json({ error }, { status: 500 });
   }
 }
