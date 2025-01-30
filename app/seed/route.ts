@@ -77,33 +77,33 @@ async function seedCustomers() {
   return insertedCustomers;
 }
 
-// async function seedRevenue() {
-//   await client.sql`
-//     CREATE TABLE IF NOT EXISTS revenue (
-//       month VARCHAR(4) NOT NULL UNIQUE,
-//       revenue INT NOT NULL
-//     );
-//   `;
+async function seedRevenue() {
+  await connectionPool.query(`
+    CREATE TABLE IF NOT EXISTS revenue (
+      month VARCHAR(4) NOT NULL UNIQUE,
+      revenue INT NOT NULL
+    );
+  `);
 
-//   const insertedRevenue = await Promise.all(
-//     revenue.map(
-//       (rev) => client.sql`
-//         INSERT INTO revenue (month, revenue)
-//         VALUES (${rev.month}, ${rev.revenue})
-//         ON CONFLICT (month) DO NOTHING;
-//       `,
-//     ),
-//   );
+  const insertedRevenue = await Promise.all(
+    revenue.map(
+      (rev) => connectionPool.query(`
+        INSERT INTO revenue (month, revenue)
+        VALUES ('${rev.month}', ${rev.revenue})
+        ON CONFLICT (month) DO NOTHING;
+      `),
+    ),
+  );
 
-//   return insertedRevenue;
-// }
+  return insertedRevenue;
+}
 
 export async function GET() {
   try {
     await seedUsers();
     await seedCustomers();
     await seedInvoices();
-    // await seedRevenue();
+    await seedRevenue();
 
     return Response.json({ message: 'Database seeded successfully' });
   } catch (error) {
