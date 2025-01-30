@@ -9,6 +9,7 @@
 6. [Chapter 4: Creating Layouts and Pages](#chapter-4-creating-layouts-and-pages)
 7. [Chapter 5: Navigating Between Pages](#chapter-5-navigating-between-pages)
 8. [Chapter 6: Setting Up Your Database](#chapter-6-setting-up-your-database)
+9. [Chapter 7: Fetching Data](#chapter-7-fetching-data)
 
 ## About the Project
 
@@ -185,3 +186,16 @@ Instead of using an HTML tag to navigate between pages, use the Link component f
 3. Review of SQL commands, such as *CREATE TABLE* and *INSERT*, for creating tables and populating them based on *placeholder-data.ts* file.
 
 **How to connect to a local PostgreSQL database: tutorial available [here](https://medium.com/@dekadekadeka/next-js-tutorial-with-local-database-quick-start-guide-394d48a0aada).**
+
+## Chapter 7: Fetching Data
+
+### Using Server Components to fetch data
+By default, Next.jsapplications use React Server Components. These components are rendered on the server and sent to the client as static HTML. This is a relatively new approach, and there are several benefits to using them:
+
+- Server Components *support JavaScript Promises, providing a solution for asynchronous tasks* like data fetching natively. You can use async/await syntax without needing to use useEffect, useState, or other data fetching libraries.
+
+- Server Components *run on the server, allowing you to keep expensive data fetches and logic on the server, only sending the result to the client*.
+
+- Since Server Components run on the server, *you can query the database directly without an additional API layer*. This saves you from writing and maintaining additional code.
+
+*A Server Component was used to show the revenues in this chapter*
