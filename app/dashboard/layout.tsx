@@ -1,7 +1,5 @@
 import SideNav from "../ui/dashboard/sidenav";
 
-export const experimental_ppr = true;
-
 // Defines a layout that will nest all pages in the app/dashboard
 export default function Layout({children} : {children: React.ReactNode}) {
     return (
