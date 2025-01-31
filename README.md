@@ -349,3 +349,11 @@ When a user visits a route:
 You may not see a difference in your application in development, but you should notice a performance improvement in production. Next.js will prerender the static parts of your route and defer the dynamic parts until the user requests them.
 
 *You can now revert these changes and move on to the next chapter.*
+
+**To recap, you've done a few things to optimize data fetching in your application so far:**
+1. Created a database in the same region as your application code to reduce latency between your server and database;
+2. Fetched data on the server with React Server Components. This allows you to keep expensive data fetches and logic on the server, reduces the client-side JavaScript bundle, and prevents your database secrets from being exposed to the client;
+3. Used SQL to only fetch the data you needed, reducing the amount of data transferred for each request and the amount of JavaScript needed to transform the data in memory;
+4. Parallelize data fetching with JavaScript - where it made to do so;
+5. Implemented Streaming to prevent slow data requests from blocking your whole page, and to allow the user to start interacting with the UI without waiting for everything to load;
+6. Move data fetching down to the components that need it, thus isolation which parts of your routes should be dynamic.
