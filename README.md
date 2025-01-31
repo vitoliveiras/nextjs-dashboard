@@ -12,6 +12,7 @@
 9. [Chapter 7: Fetching Data](#chapter-7-fetching-data)
 10. [Chapter 8: Static and Dynamic Rendering](#chapter-8-static-and-dynamic-rendering)
 11. [Chapter 9: Streaming](#chapter-9-streaming)
+12. [Chapter 10: Partial Prerendering](#chapter-10-partial-prerendering)
 
 ## About the Project
 
@@ -289,9 +290,9 @@ There are a couple of benefits of dynamic rendering:
 
 *In this chapter you are using the route group **/dashboard/(overview)** to only apply loading.tsx to your dashboard overview page.*
 
-/dashboard
---(overview)
----- loading.tsx
+/dashboard<br>
+--(overview)<br>
+---- loading.tsx<br>
 ---- page.tsx
 
 The folder structure above allows you to only apply loading.tsx to yout dashboard overview page.
@@ -306,3 +307,45 @@ Where you place your Suspense boundaries will depend on a few things:
 
 ### Lessons Learned
 - How to add a skeleton that shows a loader component when the fetching data is not ready.
+
+## Chapter 10: Partial Prerendering
+
+*Partial Prerendering is an experimental feature introduced in Next.js 14.*
+
+*PPR is only available with the Next.js canary releases (next@canary), not in the stable version of Next.js. **We do not yet recommend using Partial Prerendering in production.***
+
+To install the canary release of Next.js, run:
+```
+pnpm install next@canary
+```
+
+### Static vc. Dynamic Routes
+
+For most web apps built today, you either choose between static and dynamic rendering for your *entire application*, or for a *specific route*. And in Next.js, *if you call a dynamic function in a route (like querying your database), the entire route becomes dynamic*.
+
+However, most routes are not fully static or dynamic. For example, consider an ecommerce site. You might want to statically render the majority of the product information page, but you may want to fetch the user's cart and recommended products dinamically.
+
+In our project, we can split the dashboard route as follows:
+- Sidebar Navigation: static (doesn't rely on data is not personalized to the user)
+- Sign Out Button: dynamic
+- Cards: dynamic
+- Recent Revenue Graph: dynamic
+- Latest Invoices List: dynamic
+
+### What is Partial Prerendering?
+*Partial Prerendering is a new rendering model that allows you to combine the benefits of static and dynamic rendering in the same route.*
+
+For example, if we have:
+- Navbar (static)
+- Product Information (static)
+- Recommended Products (dynamic)
+- Cart (dynamic)
+
+When a user visits a route:
+- A static route shell that includes NavBar and Product Information (static content) is served, ensuring a fast initial load;
+- The shell leaves holes where dynamic content like the Cart and Recommended Products will load in asynchronously;
+- The async holes are streamed in parallel, reducing the overall load time of the page.
+
+You may not see a difference in your application in development, but you should notice a performance improvement in production. Next.js will prerender the static parts of your route and defer the dynamic parts until the user requests them.
+
+*You can now revert these changes and move on to the next chapter.*
