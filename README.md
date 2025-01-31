@@ -198,4 +198,44 @@ By default, Next.jsapplications use React Server Components. These components ar
 
 - Since Server Components run on the server, *you can query the database directly without an additional API layer*. This saves you from writing and maintaining additional code.
 
-*A Server Component was used to show the revenues in this chapter*
+*A Server Component was used to show the revenues in this chapter.*
+
+### Understanding request waterfalls
+*A ***waterfall** refers to a sequence of network requests that depend on the completion of previous requests. In the case of data fetching, each request can only begin once the previous request has returned data.*
+
+For example, in *app/dashboard/page.tsx*:
+
+```javascript
+const revenue = await fetchRevenue();
+const latestInvoices = await fetchLatestInvoices(); // wait for fetchRevenue() to finish
+const {
+  numberOfInvoices,
+  numberOfCustomers,
+  totalPaidInvoices,
+  totalPendingInvoices,
+} = await fetchCardData(); // wait for fetchLatestInvoices() to finish
+```
+
+This pattern in not necessarily bad. There may be cases where you *want waterfalls because you want a condition to be satisfied before you make the next request*. For example, you might want to fetch a user's ID and profile information first. Once you have the ID, you might the proceed to fetch their list of friends. In this case, each request is contingent on the data returned from the previous request.
+
+*Warning*: This behavior can also be unintentional and impact performance!
+
+### Understanding parallel data fetching
+*A commom way to avoid waterfalls is to initiate all data requests at the same time - in parallel.*
+
+In JavaScript, you can use the *Promise.all()* or *Promise.allSettled()* functions to *initiate all promises at the same data*.
+
+For example, in *app/lib/data.ts*, you used:
+```javascript
+    const data = await Promise.all([
+      invoiceCountPromise,
+      customerCountPromise,
+      invoiceStatusPromise,
+    ]);
+```
+
+Then, you can:
+- Start executing all data fetches at the same time, which is faster than waiting for each request to complete in a waterfall;
+- Use a native JavaScript pattern than can be applied to any library or framework.
+
+However, there is one disadvantage of relying only on this JavaScript pattern: what happens if one data request is slower than all the others? Let's find out more in the next chapter.
