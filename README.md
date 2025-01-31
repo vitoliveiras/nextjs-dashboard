@@ -11,6 +11,7 @@
 8. [Chapter 6: Setting Up Your Database](#chapter-6-setting-up-your-database)
 9. [Chapter 7: Fetching Data](#chapter-7-fetching-data)
 10. [Chapter 8: Static and Dynamic Rendering](#chapter-8-static-and-dynamic-rendering)
+11. [Chapter 9: Streaming](#chapter-9-streaming)
 
 ## About the Project
 
@@ -268,4 +269,40 @@ There are a couple of benefits of dynamic rendering:
 
 *Adding an artificial 3-second delay to simulate a slow data fetch in the fetchRevenue function*, the results is that now your whole page is blocked from showing UI to the visitor while the data is being fetched. Which brings us to a common challenge developers have to solve:*
 
-*With dynamic rendering, **your application is only as fast as your slowesr data fetch!***
+*With dynamic rendering, **your application is only as fast as your slower data fetch!***
+
+## Chapter 9: Streaming
+*In the previous chapter, we discussed how slow data fetches can impact the performance of your application. Let's look at how you can improve the user experience when there are a slow data requests.*
+
+### What is streaming?
+*Streaming is a data transfer technique that allows you to break down a route into smoller "chunks" and progressively stream them from the server to the client as they become ready.*
+
+*By streaming, **you can prevent slow data requests from blocking your whole page**. This allows the user to see and interact with parts of the page without waiting for all the data to load before any UI can be shown to the user.*
+
+**There are two ways implement streaming in Next.js:**
+- At the page level, with the loading.tsx file (which creates *Suspenses* for you);
+- At the component level, with *Suspense* for more granular control.
+
+### Route Groups
+
+*Route groups allows you to organize files into logical groups without affecting the URL path structure. When you create a new folder using parentheses, the name won't be included in the URL path.*
+
+*In this chapter you are using the route group **/dashboard/(overview)** to only apply loading.tsx to your dashboard overview page.*
+
+/dashboard
+--(overview)
+---- loading.tsx
+---- page.tsx
+
+The folder structure above allows you to only apply loading.tsx to yout dashboard overview page.
+
+### Deciding where to place your Suspense boundaries
+Where you place your Suspense boundaries will depend on a few things:
+1. How you want the user experience the page as it streams;
+2. What content you want to priorizatize;
+3. If the components rely on data fetching.
+
+*Where you place your suspense boundaries will vary depending on your application. In general, it's a **good practice to move your data fetches down to the components that need it, and the wrap those components in Suspense**. But there is nothing wrong with streaming the section or the whole page if that's what your application needs.
+
+### Lessons Learned
+- How to add a skeleton that shows a loader component when the fetching data is not ready.
