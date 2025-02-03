@@ -2,6 +2,9 @@
 
 // validation library
 import { z } from 'zod';
+import postgres from 'postgres';
+
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'prefer' });
 
 // expected types from the database
 const FormSchema = z.object({
@@ -26,8 +29,8 @@ export async function createInvoice(formData: FormData) {
     const amountInCents = amount * 100;
     const date = new Date().toISOString().split('T')[0];
 
-    console.log(customerId);
-    console.log(amountInCents);
-    console.log(status);
-    console.log(date);
+    await sql`
+        INSERT INTO invoices (customer_id, amount, status, date)
+        VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
+    `;
 }
