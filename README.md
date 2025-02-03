@@ -1,6 +1,16 @@
-# Learn Next.js
+# Learn Next.js Course
 
-## About Project
+## Table of Content
+1. [About the Project](#about-the-project)
+2. [Overview](#overview)
+3. [Chapter 1: Getting Started](#chapter-1-getting-started)
+4. [Chapter 2: CSS Styling](#chapter-2-css-styling)
+5. [Chapter 3: Optimizing Fonts and Images](#chapter-3-optimizing-fonts-and-images)
+6. [Chapter 4: Creating Layouts and Pages](#chapter-4-creating-layouts-and-pages)
+7. [Chapter 5: Navigating Between Pages](#chapter-5-navigating-between-pages)
+8. [Chapter 6: Setting Up Your Database](#chapter-6-setting-up-your-database)
+
+## About the Project
 
 Financial dashboard that has:
 1. A public home page;
@@ -15,8 +25,8 @@ By the end of the course, you'll have the essential skills needed to start build
 
 ## Overview
 
-- Styles: The diferente ways to style yout application in Next.js;
-- Optimizations: HOw to optimize images, links and fonts;
+- Styles: The different ways to style yout application in Next.js;
+- Optimizations: How to optimize images, links and fonts;
 - Routing: How to create nested layouts and pages using file-system routing;
 - Data Fetching: How to set up a Postgres database on Vercel, and best practices for teaching and streaming;
 - Search and Pagination: How to implemente search and pagination using URL search params;
@@ -139,6 +149,19 @@ Now, the Inter font can be imported and used at any component.
 *Important:*
 It's a good practice to set the width and height of images to avoid layout shift, these should be an aspect ratio *identical* to the source image. These values are *not* the size image is rendered, but instead the size of the actual image file used to understanding the aspect ratio.
 
+## Chapter 4: Creating Layouts and Pages
+
+### Understanding Layout function
+
+*This function defines a layout that will nest all pages in the directory where it is defined.*
+
+*For example, it can be used in the app/dashboard to share a SideNav with all pages in this directory.*
+
+### Understanding RootLayout function
+*This function is **required** in every Next.js application, and any UI added to the root layout will be shared across **all** pages of the application.*
+
+*It can be used to modify HTML and body tags, and add metadata.*
+
 ## Chapter 5: Navigating Between Pages
 
 ### Optimizing navigation
@@ -149,3 +172,16 @@ Instead of using an HTML tag to navigate between pages, use the Link component f
 ✅ Using the Link component from next/link: navigate between the pages without seeing a full refresh.
 
 *💡 To improve the navigation experience, Next.js automatically code splits your application by route segments. This is different from a traditional Reat SPA, where the browser loads all your application code on the initial load.*
+
+## Chapter 6: Setting Up Your Database
+
+### Deploying the project with Vercel
+- Whenever you push changes to your **main** branch, Vercel will automatically redeploy your application with no configuration needed 
+- When opening pull requests, you'll also have a instant preview URLs which allow to catch deployment errors early and share a preview of your project with the team members for feedback
+
+### Lessons Learned
+1. How to deploy a Project using Vercel;
+2. How to connect with a PostgreSQL database;
+3. Review of SQL commands, such as *CREATE TABLE* and *INSERT*, for creating tables and populating them based on *placeholder-data.ts* file.
+
+**How to connect to a local PostgreSQL database: tutorial available [here](https://medium.com/@dekadekadeka/next-js-tutorial-with-local-database-quick-start-guide-394d48a0aada).**
