@@ -13,10 +13,9 @@ export default function Search({ placeholder }: { placeholder: string }) {
 
   // only update URL 0.3 second after user has stopped typing
   const handleSearch = useDebouncedCallback((term: string) => {
-    console.log(`Searching... ${term}`);
-
     // storage the URL params
     const params = new URLSearchParams(searchParams);
+    params.set('page', '1');
     if (term) {
       // add term to the URL search params
       params.set('query', term);
