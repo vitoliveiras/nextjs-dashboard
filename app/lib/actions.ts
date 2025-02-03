@@ -3,6 +3,8 @@
 // validation library
 import { z } from 'zod';
 import postgres from 'postgres';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'prefer' });
 
@@ -33,4 +35,9 @@ export async function createInvoice(formData: FormData) {
         INSERT INTO invoices (customer_id, amount, status, date)
         VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
     `;
+    
+    // revalidate path, and fetch fresh data from the server 
+    revalidatePath('/dashboard/invoices');
+    // redirect to invoices
+    redirect('/dashboard/invoices');
 }
