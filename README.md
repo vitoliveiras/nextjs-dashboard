@@ -16,6 +16,7 @@
 13. [Chapter 11: Adding Search and Pagination](#chapter-11-adding-search-and-pagination)
 14. [Chapter 12: Mutating Data](#chapter-12-mutating-data)
 15. [Chapter 13: Handling Errors](#chapter-13-handling-errors)
+16. [Chapter 14: Improving Accessibility](#chapter-14-improving-accessibility)
 
 ## About the Project
 
@@ -466,3 +467,29 @@ It can be handle adding the Error component to the directory. For example, in */
 *notFound* function can be used when you try to fetch a resource that doesn't exist.
 
 *That's something to keep in mind, notFound will take precedence over error.tsx, so you can reach out for it when you want to handle more specific errors!*
+
+## Chapter 14: Improving Accessibility
+
+### What is accessibility
+
+Accessibility refers to designing and implementating web application that everyone can use, including those with disabilities.
+
+### Improving form accessibility
+
+There are three things we're already doing to improve accessibility in our forms:
+1. Semantic HTML: using semantic elements (*input*, *option*, etc) instead of *div*. This allows assistive technologies (AT) to focus on the input elements and provide appropriate conetextual information to the user, making the form easier to navigate and understand;
+2. Labelling: including *Label* and the *htmlFor* attribute ensures that each form field has a descriptive text label. This improve AT support by providing context and also enhances usability;
+3. Focus Outline: te fields are properly styled to show an outline when they are in focus. This is critical for accessibility and screen reader users to understand where they are on the form. You can verify this by pressing *tab*.
+
+### Server-side validation
+
+By validating forms on the server, you can:
+1. Ensure your data is in the expected format before sending it to your database;
+2. Reduce the risk of malicious users bypassing client-side validation;
+3. Have one source of truth for what is considered valid data.
+
+### Lessons Learned
+
+1. How to use next lint to verify accessibility warnings;
+2. How to implement server-side form validation (required fields validation);
+3. How to use the React useActionState hook to handle form errors, and display them to the user.
