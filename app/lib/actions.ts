@@ -42,6 +42,7 @@ export type State = {
 export async function createInvoice(prevState: State, formData: FormData) {
     // validate the types using Zod
     const validatedFields = CreateInvoice.safeParse({
+        // get by the username property of the component
         customerId: formData.get('customerId'),
         amount: formData.get('amount'),
         status: formData.get('status'),
@@ -83,6 +84,7 @@ export async function createInvoice(prevState: State, formData: FormData) {
 
 export async function updateInvoice(id: string, prevState: State, formData: FormData) {
     const validatedFields = UpdateInvoice.safeParse({
+        // get by the username property of the component
         customerId: formData.get('customerId'),
         amount: formData.get('amount'),
         status: formData.get('status'),
