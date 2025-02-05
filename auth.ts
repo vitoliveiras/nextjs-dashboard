@@ -41,7 +41,7 @@ export const { auth, signIn, signOut } = NextAuth({
                             return null;
                         }
 
-                        // if user was found, decrypt and validate your password
+                        // if user was found, decrypt and validate their password
                         const passwordMatch = await bcrypt.compare(password, user.password);
 
                         if (passwordMatch) {
