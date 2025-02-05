@@ -10,6 +10,7 @@
 7. [Chapter 5: Navigating Between Pages](#chapter-5-navigating-between-pages)
 8. [Chapter 6: Setting Up Your Database](#chapter-6-setting-up-your-database)
 9. [Chapter 7: Fetching Data](#chapter-7-fetching-data)
+10. [Chapter 8: Static and Dynamic Rendering](#chapter-8-static-and-dynamic-rendering)
 
 ## About the Project
 
@@ -221,7 +222,7 @@ This pattern in not necessarily bad. There may be cases where you *want waterfal
 *Warning*: This behavior can also be unintentional and impact performance!
 
 ### Understanding parallel data fetching
-*A commom way to avoid waterfalls is to initiate all data requests at the same time - in parallel.*
+*A common way to avoid waterfalls is to initiate all data requests at the same time - in parallel.*
 
 In JavaScript, you can use the *Promise.all()* or *Promise.allSettled()* functions to *initiate all promises at the same data*.
 
@@ -239,3 +240,32 @@ Then, you can:
 - Use a native JavaScript pattern than can be applied to any library or framework.
 
 However, there is one disadvantage of relying only on this JavaScript pattern: what happens if one data request is slower than all the others? Let's find out more in the next chapter.
+
+## Chapter 8: Static and Dynamic Rendering
+
+There are two limitations to the current setup:
+- The data requests are creating an unintentional waterfall;
+- The dashboard is static, so any data updates will bot be reflected on your application.
+
+### Static Rendering
+*With static rendering, data fetching and rendering happens on the server at **build time** (when you deploy) or when revalidating data.*
+
+There are a couple of benefits of static rendering:
+- Faster websites: prerendered content can be cached and globally served when deployed to platforms like Vercel;
+- Reduced Server Load: because the content is cached, your server does not have to dynamically generate content for each user request;
+- SEO: prerendered content is easier for seacrh engine crawlers to index, as the content is already when the page  loads.
+
+Static rendering is useful for UI with *no data* or *data that is shared across users*, such as a static blog or a product page. It might **not be good fit for a dashboard** that has a **personalized data which is regularly updated**.
+
+### Dynamic Rendering
+
+*With dynamic rendering, content is rendering on the server for each user at **request time** (when the users visits the page).*
+
+There are a couple of benefits of dynamic rendering:
+- Real-Time Data: dynamic rendering allows your application to display real-time or frequently updated data. This is ideal for applications where data changes often;
+- Use Specific Content: it's easier to serve personalized content, such as dashboards or user profiles, and update the data based on user interaction;
+- Request Time Information: dynamic rendering allows you to access information that can only be known at request time, such as cookies or the URL search parameters.
+
+*Adding an artificial 3-second delay to simulate a slow data fetch in the fetchRevenue function*, the results is that now your whole page is blocked from showing UI to the visitor while the data is being fetched. Which brings us to a common challenge developers have to solve:*
+
+*With dynamic rendering, **your application is only as fast as your slowesr data fetch!***
