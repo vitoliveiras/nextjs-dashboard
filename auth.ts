@@ -32,28 +32,26 @@ export const { auth, signIn, signOut } = NextAuth({
                     .object({ email: z.string().email(), password: z.string().min(6) })
                     .safeParse(credentials);
 
-                    if (parsedCredentials.success) {
-                        // successful zod data validation
-                        const { email, password } = parsedCredentials.data;
-                        const user = await getUser(email);
-                        if (!user) {
-                            // email not found
-                            return null;
-                        }
-
-                        // if user was found, decrypt and validate their password
-                        const passwordMatch = await bcrypt.compare(password, user.password);
-
-                        if (passwordMatch) {
-                            // user authenticated
-                            return user;
-                        }
-
-                        console.log('Invalid credentials');
-                        // prevents the user from logging in
+                if (parsedCredentials.success) {
+                    // successful zod data validation
+                    const { email, password } = parsedCredentials.data;
+                    const user = await getUser(email);
+                    if (!user) {
+                        // email not found
                         return null;
                     }
-                    return null;
+
+                    // if user was found, decrypt and validate their password
+                    const passwordMatch = await bcrypt.compare(password, user.password);
+
+                    if (passwordMatch) {
+                        // user authenticated
+                        return user;
+                    }
+                }
+                console.log('Invalid credentials');
+                // prevents the user from logging in
+                return null;
             }
         })],
 });
