@@ -11,10 +11,10 @@ export const authConfig = {
         params:
             auth: contains the user's session
             request: contains the incoming request
-        */
+        */ 
         authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;
-            const isOnDashboard = nextUrl.pathname.startsWith('/dashsboard');
+            const isOnDashboard = nextUrl.pathname.startsWith('/dashoboard');
 
             if (isOnDashboard) {
                 if (isLoggedIn) return true;
