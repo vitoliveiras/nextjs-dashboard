@@ -9,6 +9,7 @@
 6. [Chapter 4: Creating Layouts and Pages](#chapter-4-creating-layouts-and-pages)
 7. [Chapter 5: Navigating Between Pages](#chapter-5-navigating-between-pages)
 8. [Chapter 6: Setting Up Your Database](#chapter-6-setting-up-your-database)
+9. [Chapter 7: Fetching Data](#chapter-7-fetching-data)
 
 ## About the Project
 
@@ -185,3 +186,56 @@ Instead of using an HTML tag to navigate between pages, use the Link component f
 3. Review of SQL commands, such as *CREATE TABLE* and *INSERT*, for creating tables and populating them based on *placeholder-data.ts* file.
 
 **How to connect to a local PostgreSQL database: tutorial available [here](https://medium.com/@dekadekadeka/next-js-tutorial-with-local-database-quick-start-guide-394d48a0aada).**
+
+## Chapter 7: Fetching Data
+
+### Using Server Components to fetch data
+By default, Next.jsapplications use React Server Components. These components are rendered on the server and sent to the client as static HTML. This is a relatively new approach, and there are several benefits to using them:
+
+- Server Components *support JavaScript Promises, providing a solution for asynchronous tasks* like data fetching natively. You can use async/await syntax without needing to use useEffect, useState, or other data fetching libraries.
+
+- Server Components *run on the server, allowing you to keep expensive data fetches and logic on the server, only sending the result to the client*.
+
+- Since Server Components run on the server, *you can query the database directly without an additional API layer*. This saves you from writing and maintaining additional code.
+
+*A Server Component was used to show the revenues in this chapter.*
+
+### Understanding request waterfalls
+*A ***waterfall** refers to a sequence of network requests that depend on the completion of previous requests. In the case of data fetching, each request can only begin once the previous request has returned data.*
+
+For example, in *app/dashboard/page.tsx*:
+
+```javascript
+const revenue = await fetchRevenue();
+const latestInvoices = await fetchLatestInvoices(); // wait for fetchRevenue() to finish
+const {
+  numberOfInvoices,
+  numberOfCustomers,
+  totalPaidInvoices,
+  totalPendingInvoices,
+} = await fetchCardData(); // wait for fetchLatestInvoices() to finish
+```
+
+This pattern in not necessarily bad. There may be cases where you *want waterfalls because you want a condition to be satisfied before you make the next request*. For example, you might want to fetch a user's ID and profile information first. Once you have the ID, you might the proceed to fetch their list of friends. In this case, each request is contingent on the data returned from the previous request.
+
+*Warning*: This behavior can also be unintentional and impact performance!
+
+### Understanding parallel data fetching
+*A commom way to avoid waterfalls is to initiate all data requests at the same time - in parallel.*
+
+In JavaScript, you can use the *Promise.all()* or *Promise.allSettled()* functions to *initiate all promises at the same data*.
+
+For example, in *app/lib/data.ts*, you used:
+```javascript
+    const data = await Promise.all([
+      invoiceCountPromise,
+      customerCountPromise,
+      invoiceStatusPromise,
+    ]);
+```
+
+Then, you can:
+- Start executing all data fetches at the same time, which is faster than waiting for each request to complete in a waterfall;
+- Use a native JavaScript pattern than can be applied to any library or framework.
+
+However, there is one disadvantage of relying only on this JavaScript pattern: what happens if one data request is slower than all the others? Let's find out more in the next chapter.
