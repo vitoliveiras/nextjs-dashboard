@@ -35,11 +35,11 @@ By the end of the course, you'll have the essential skills needed to start build
 
 ## Overview
 
-- Styles: The different ways to style yout application in Next.js;
+- Styles: The different ways to style your application in Next.js;
 - Optimizations: How to optimize images, links and fonts;
 - Routing: How to create nested layouts and pages using file-system routing;
 - Data Fetching: How to set up a Postgres database on Vercel, and best practices for teaching and streaming;
-- Search and Pagination: How to implemente search and pagination using URL search params;
+- Search and Pagination: How to implement search and pagination using URL search params;
 - Mutating Data: How to mutate data using React Server Action, and revalidate the Next.js cache;
 - Error Handiling: How to handle general and 404 not found errors;
 - Form Validation and Acessibility: How to do server-side form validation and tips for improving acessibility;
@@ -63,14 +63,14 @@ npm install -g pnpm
 npx create-next-app@latest nextjs-dashboard --example "https://github.com/vercel/next-learn/tree/main/dashboard/starter-example" --use-pnpm
 ```
 
-This command uses create-next-app, a CLI tool that sets up a Next.js application for you. In the command above, you're also using the *--example* flag with the starter examplo for this course.
+This command uses create-next-app, a CLI tool that sets up a Next.js application for you. In the command above, you're also using the *--example* flag with the starter example for this course.
 
 ### Understanding the basic structure of the Next.js app
 
-- **/app**: Contains all the routes, components and logic for you application, this is where you'll be mostly working from
+- **/app**: Contains all the routes, components and logic for your application, this is where you'll be mostly working from
 - **/app/lib**: Contains functions used in your application, such as reusable utility functions and data fetching functions
 - **/app/ui**: Contains all the UI components for your application, such as cards, tables, and forms. To save time, we've pre-styled these componenets for you
-- **/public**: Contains al  the static assets for your application, such images
+- **/public**: Contains all the static assets for your application, such images
 - **Config Files**: You'll also notice config files such as *next.config.ts* at the root of your application. Most of these files are created and pre-configured when you start a new project using *create-next-app*. You'll not need to modify them in this course.
 
 ### Running the development server
@@ -199,7 +199,7 @@ Instead of using an HTML tag to navigate between pages, use the Link component f
 ## Chapter 7: Fetching Data
 
 ### Using Server Components to fetch data
-By default, Next.jsapplications use React Server Components. These components are rendered on the server and sent to the client as static HTML. This is a relatively new approach, and there are several benefits to using them:
+By default, Next.js applications use React Server Components. These components are rendered on the server and sent to the client as static HTML. This is a relatively new approach, and there are several benefits to using them:
 
 - Server Components *support JavaScript Promises, providing a solution for asynchronous tasks* like data fetching natively. You can use async/await syntax without needing to use useEffect, useState, or other data fetching libraries.
 
@@ -294,14 +294,14 @@ There are a couple of benefits of dynamic rendering:
 
 *Route groups allows you to organize files into logical groups without affecting the URL path structure. When you create a new folder using parentheses, the name won't be included in the URL path.*
 
-*In this chapter you are using the route group **/dashboard/(overview)** to only apply loading.tsx to your dashboard overview page.*
+*In this chapter we are using the route group **/dashboard/(overview)** to only apply loading.tsx to the dashboard overview page.*
 
 /dashboard<br>
 --(overview)<br>
 ---- loading.tsx<br>
 ---- page.tsx
 
-The folder structure above allows you to only apply loading.tsx to yout dashboard overview page.
+The folder structure above allows you to only apply loading.tsx to your dashboard overview page.
 
 ### Deciding where to place your Suspense boundaries
 Where you place your Suspense boundaries will depend on a few things:
@@ -366,7 +366,7 @@ You may not see a difference in your application in development, but you should 
 
 ## Chapter 11: Adding Search and Pagination
 
-Inside */dashboard/invoices/page.tsx* some componenets will be added, such as:
+Inside */dashboard/invoices/page.tsx* some components will be added, such as:
 1. Search: allows users to search for specific invoices;
 2. Pagination: allows users to navigate between pages of invoices;
 3. Table: displays the invoices.
@@ -451,8 +451,8 @@ You can create dynamic route segments by *wrapping a folder's name in square bra
 The structure above allows you to access the route /dashboard/invoices/1/edit to update the data of the user with ID 1.
 
 ### Lessons Learned
-1. Link a form to a Server Action (that creates an invoice);
-2. Validate the data from form to alligns with the expected types in database using Zod (a TypeScript-first validation library);
+1. How to link a form to a Server Action (that creates an invoice);
+2. How to validate the form data to align with the expected types in database using Zod (a TypeScript-first validation library);
 3. How to get current time and convert it to a string;
 4. How to create a dynamic route segment;
 5. How to update a record in the database;
@@ -462,7 +462,7 @@ The structure above allows you to access the route /dashboard/invoices/1/edit to
 
 ### Handling uncaught exceptions from the server
 
-It can be handle adding the Error component to the directory. For example, in */app/dashboard/invoices/error.tsx* will catch uncaught exceptions to the invoices page.
+It can be handled by adding the Error component to the directory. For example, in */app/dashboard/invoices/error.tsx* will catch uncaught exceptions for the invoices page.
 
 ### Handling 404 errors
 
@@ -502,7 +502,7 @@ By validating forms on the server, you can:
 ### Authentication vs. Authorization
 
 - Authentication is about *making sure the user is who they say they are*. You're improving your identity with something you have like a username and password;
-- Authorization is the next step. Once a uer's identity is confirmed, *authorization decides what parts of the application they are allowed to use*.
+- Authorization is the next step. Once a user's identity is confirmed, *authorization decides what parts of the application they are allowed to use*.
 
 ### How to generate a secret key to use in the NextAuth.js
 
@@ -527,7 +527,7 @@ By validating forms on the server, you can:
 ## Chapter 16: Adding Metadata
 
 ### What metadata is
-Metadata provides additional details about a webpage. Metadata is not visible to the users visiting the page, but it is crucial for search engines and other syestems that need to understand your webpages's content better.
+Metadata provides additional details about a webpage. Metadata is not visible to the users visiting the page, but it is crucial for search engines and other systems that need to understand your webpage's content better.
 
 ### Types of metadata
 1. Title Metadata: responsible for the title of a webpage that is displayed on the browser tab. It's crucial for SEO as it helps engines to understand what the webpage is about.
