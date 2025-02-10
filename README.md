@@ -14,6 +14,7 @@
 11. [Chapter 9: Streaming](#chapter-9-streaming)
 12. [Chapter 10: Partial Prerendering](#chapter-10-partial-prerendering)
 13. [Chapter 11: Adding Search and Pagination](#chapter-11-adding-search-and-pagination)
+14. [Chapter 12: Mutating Data](#chapter-12-mutating-data)
 
 ## About the Project
 
@@ -398,3 +399,57 @@ As a *general rule, if you want to read the parameters from the client, use useS
 
 
 *Important: You don't want to fetch data on the client as this would expose your database secrets (remember, you're not using an API layer). Instead, you can fetch the data on the server, and pass it to the component as a prop.*
+
+
+## Chapter 12: Mutating Data
+
+### What are Server Actions?
+React Server Actions allow you to run asynchronous code directly on the server. They eliminate the need to create API endpoints to mutate your data. Instead, you write asynchronous functions that executes on the server and can be invoked from your Client or Server Components.
+
+Secure is a top priority for web applications. This is where Server Actions come in. They include features like encrypted closures, strict input checks, error message hasing, host restrictions, and more - all working together to significantly enhance your application security.
+
+### Using form with Server Actions
+```javascript
+// Server Component
+export default function Page() {
+  // Action
+  async function create(formData: FormData) {
+    'use server';
+ 
+    // Logic to mutate data...
+  }
+ 
+  // Invoke the action using the "action" attribute
+  return <form action={create}>...</form>;
+}
+```
+
+**Here are the steps you'll take to create a new invoice:**
+1. Create a form to capture the user's input;
+2. Create a Server Action and invoke it from the form;
+3. Inside your Server Action, extract the data from the *formData* object;
+4. Validate and prepare the data to be inserted into your database;
+5. Insert the data and handle any errors;
+6. Revalidate the cache and redirect the user back to invoices page.
+
+### Best practice about write Server Actions
+*You can also write Server Actions directly inside Server Components by adding "use server" inside the action. But for this course, we'll keep them all organized in a separate file. We recommend having a separate file for your actions (such as /app/lib/actions.ts).*
+
+### Create a Dynamic Route Segment
+
+You can create dynamic route segments by *wrapping a folder's name in square brackets*. For example, *[id]*, *[post]* or *[slug]*.
+
+/invoices<br>
+-- [id]<br>
+---- edit<br>
+------ page.tsx<br>
+
+The structure above allows you to access the route /dashboard/invoices/1/edit to update the data of the user with ID 1.
+
+## Lessons Learned
+1. Link a form to a Server Action (that creates an invoice);
+2. Validate the data from form to alligns with the expected types in database using Zod (a TypeScript-first validation library);
+3. How to get current time and convert it to a string;
+4. How to create a dynamic route segment;
+5. How to update a record in the database;
+6. How to delete a record in the database.
