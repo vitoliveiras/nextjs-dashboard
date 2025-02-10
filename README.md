@@ -18,6 +18,7 @@
 15. [Chapter 13: Handling Errors](#chapter-13-handling-errors)
 16. [Chapter 14: Improving Accessibility](#chapter-14-improving-accessibility)
 17. [Chapter 15: Adding Authentication](#chapter-15-adding-authentication)
+18. [Chapter 16: Adding Metadata](#chapter-16-adding-metadata)
 
 ## About the Project
 
@@ -521,3 +522,43 @@ By validating forms on the server, you can:
 2. How to add env variables to the vercel project;
 3. How to decrypt passwords using bcrypt package;
 4. How to add logout functionality.
+
+
+## Chapter 16: Adding Metadata
+
+### What metadata is
+Metadata provides additional details about a webpage. Metadata is not visible to the users visiting the page, but it is crucial for search engines and other syestems that need to understand your webpages's content better.
+
+### Types of metadata
+1. Title Metadata: responsible for the title of a webpage that is displayed on the browser tab. It's crucial for SEO as it helps engines to understand what the webpage is about.
+    ```html
+    <title>Page Title</title>
+    ```
+2. Keyword Metadata: includes the keywords related to the webpage content, helping engines index the pages.
+    ```html
+    <meta name="keywords" content="keyword1, keyword2, keyword3" />
+    ```
+3. Open Graph Metadata: enhances the way a webpage is represented when shared on social media platforms, providing information such as the title, description, and preview image.
+
+    ```html
+    <meta property="og:title" content="Title Here" />
+
+    <meta property="og:description" content="Description Here" />
+    <meta property="og:image" content="image_url_here" />
+    ```
+4. Favicon Metadata: links the favicon (a small icon) to the webpage, displayed in the browser's address or tab.
+    ```html
+    <link rel="icon" href="path/to/favicon.ico" />
+    ```
+
+### Adding Metadata to the Next.js Application
+
+Next.js has a Metadata API that can be used to define your application metadata. There are two ways you can add metadata to your application:
+- Config-based: export a *static metadata object* or a dynamic *generateMetadata function* in a layout.js or page.js file;
+- File-based: Next.js has a range of special files that are specifically used for metadata purpose:
+  - *favicon.ico*, *apple-icon.jpg*, and *icon.pg*: utilized for favicons and icons
+  - *opengraph-image.jpg* and *twitter-image.jpg*: employed for social media images
+  - *robots.txt*: provides instructions for search engine crawling
+  - *sitemap.xml*: offers information about the website's structure
+
+With both these options, Next.js will automatically generate the relevant *head* elements for your page.
