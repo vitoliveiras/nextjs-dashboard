@@ -24,3 +24,29 @@ model User {
   // how the table will be named
   @@map("users")
 }
+
+model Customer {
+  id        String @id @default(uuid())
+  name      String
+  email     String
+  image_url String
+
+  @@map("customers")
+}
+
+model Invoice {
+  id          String @id @default(uuid())
+  customer_id String
+  amount      Int
+  status      String
+  date        DateTime
+
+  @@map("invoices")
+}
+
+model Revenue {
+  month   String @unique
+  revenue Int
+
+  @@map("revenue")
+}
