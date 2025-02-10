@@ -17,6 +17,7 @@
 14. [Chapter 12: Mutating Data](#chapter-12-mutating-data)
 15. [Chapter 13: Handling Errors](#chapter-13-handling-errors)
 16. [Chapter 14: Improving Accessibility](#chapter-14-improving-accessibility)
+17. [Chapter 15: Adding Authentication](#chapter-15-adding-authentication)
 
 ## About the Project
 
@@ -493,3 +494,30 @@ By validating forms on the server, you can:
 1. How to use next lint to verify accessibility warnings;
 2. How to implement server-side form validation (required fields validation);
 3. How to use the React useActionState hook to handle form errors, and display them to the user.
+
+
+## Chapter 15: Adding Authentication
+
+### Authentication vs. Authorization
+
+- Authentication is about *making sure the user is who they say they are*. You're improving your identity with something you have like a username and password;
+- Authorization is the next step. Once a uer's identity is confirmed, *authorization decides what parts of the application they are allowed to use*.
+
+### How to generate a secret key to use in the NextAuth.js
+
+- MacOS: execute
+  
+  ```
+  openssl rand -base64 32
+  ```
+
+- Windows:
+
+  Generate [here](https://generate-secret.vercel.app/32).
+
+
+### Lessons Learned
+1. How to use NextAuth.js to add authentication to the application;
+2. How to add env variables to the vercel project;
+3. How to decrypt passwords using bcrypt package;
+4. How to add logout functionality.
