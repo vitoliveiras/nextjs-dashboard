@@ -1,109 +1,66 @@
 import bcrypt from 'bcrypt';
-import postgres from 'postgres';
 import { invoices, customers, revenue, users } from '../lib/placeholder-data';
-
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'prefer' });
+import { prisma } from '../lib/prisma';
+import { User } from '@prisma/client';
 
 async function seedUsers() {
-  await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-  await sql`
-    CREATE TABLE IF NOT EXISTS users (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      email TEXT NOT NULL UNIQUE,
-      password TEXT NOT NULL
-    );
-  `;
+  // hash users password
+  const hashPassword = async (user: User) => {
+    const hashedPassword = await bcrypt.hash(user.password, 10);
+    return { ...user, password: hashedPassword };
+  }
 
-  const insertedUsers = await Promise.all(
-    users.map(async (user) => {
-      const hashedPassword = await bcrypt.hash(user.password, 10);
-      return sql`
-        INSERT INTO users (id, name, email, password)
-        VALUES (${user.id}, ${user.name}, ${user.email}, ${hashedPassword})
-        ON CONFLICT (id) DO NOTHING;
-      `;
-    }),
-  );
+  const processUsers = async (usersList: User[]) => {
+    const hashedUsers = await Promise.all(usersList.map(hashPassword));
+    return hashedUsers;
+  }
 
-  return insertedUsers;
+  processUsers(users).then(async (hashedUsers) => {
+    const insertedUsers = await prisma.user.createMany({
+      data: hashedUsers,
+      skipDuplicates: true, // skip duplicated registers
+    });
+
+    return insertedUsers;
+  });
 }
 
 async function seedInvoices() {
-  await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+  // convert date to format expected by prisma (DateTime)
+  const convertedInvoices = invoices.map((invoice) => {
+    const [year, month, day] = invoice.date.split('-');
+    return {... invoice, date: `${year}-${month}-${day}T00:00:00.000Z` }
+  });
 
-  await sql`
-    CREATE TABLE IF NOT EXISTS invoices (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      customer_id UUID NOT NULL,
-      amount INT NOT NULL,
-      status VARCHAR(255) NOT NULL,
-      date DATE NOT NULL
-    );
-  `;
-
-  const insertedInvoices = await Promise.all(
-    invoices.map(
-      (invoice) => sql`
-        INSERT INTO invoices (customer_id, amount, status, date)
-        VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${invoice.date})
-        ON CONFLICT (id) DO NOTHING;
-      `,
-    ),
-  );
+  const insertedInvoices = await prisma.invoice.createMany({
+    data: convertedInvoices,
+    skipDuplicates: true,
+  });
 
   return insertedInvoices;
 }
 
 async function seedCustomers() {
-  await sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
-
-  await sql`
-    CREATE TABLE IF NOT EXISTS customers (
-      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-      name VARCHAR(255) NOT NULL,
-      email VARCHAR(255) NOT NULL,
-      image_url VARCHAR(255) NOT NULL
-    );
-  `;
-
-  const insertedCustomers = await Promise.all(
-    customers.map(
-      (customer) => sql`
-        INSERT INTO customers (id, name, email, image_url)
-        VALUES (${customer.id}, ${customer.name}, ${customer.email}, ${customer.image_url})
-        ON CONFLICT (id) DO NOTHING;
-      `,
-    ),
-  );
+  const insertedCustomers = await prisma.customer.createMany({
+    data: customers,
+    skipDuplicates: true
+  })
 
   return insertedCustomers;
 }
 
 async function seedRevenue() {
-  await sql`
-    CREATE TABLE IF NOT EXISTS revenue (
-      month VARCHAR(4) NOT NULL UNIQUE,
-      revenue INT NOT NULL
-    );
-  `;
-
-  const insertedRevenue = await Promise.all(
-    revenue.map(
-      (rev) => sql`
-        INSERT INTO revenue (month, revenue)
-        VALUES (${rev.month}, ${rev.revenue})
-        ON CONFLICT (month) DO NOTHING;
-      `,
-    ),
-  );
+  const insertedRevenue = await prisma.revenue.createMany({
+    data: revenue,
+    skipDuplicates: true
+  });
 
   return insertedRevenue;
 }
 
 export async function GET() {
   try {
-    await sql.begin(() => [
+    await Promise.all([
       seedUsers(),
       seedCustomers(),
       seedInvoices(),
