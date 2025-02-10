@@ -13,6 +13,7 @@
 10. [Chapter 8: Static and Dynamic Rendering](#chapter-8-static-and-dynamic-rendering)
 11. [Chapter 9: Streaming](#chapter-9-streaming)
 12. [Chapter 10: Partial Prerendering](#chapter-10-partial-prerendering)
+13. [Chapter 11: Adding Search and Pagination](#chapter-11-adding-search-and-pagination)
 
 ## About the Project
 
@@ -357,3 +358,43 @@ You may not see a difference in your application in development, but you should 
 4. Parallelize data fetching with JavaScript - where it made to do so;
 5. Implemented Streaming to prevent slow data requests from blocking your whole page, and to allow the user to start interacting with the UI without waiting for everything to load;
 6. Move data fetching down to the components that need it, thus isolation which parts of your routes should be dynamic.
+
+## Chapter 11: Adding Search and Pagination
+
+Inside */dashboard/invoices/page.tsx* some componenets will be added, such as:
+1. Search: allows users to search for specific invoices;
+2. Pagination: allows users to navigate between pages of invoices;
+3. Table: displays the invoices.
+
+**How it will work?**
+The search funcionality will span the client and the server. When a user searches for an invoice on the client, the URL params will be updated, data will be fetched on the server, and the table will re-render on the server with new data.
+
+### Why use URL search params?
+
+URL search params will be used to manage the search state. There are a couple of benefits of implementing search with URL params:
+- Bookmarkable and shareable URLs: since the search parameters are in the URL, users can bookmark the current state of the application, including their search queries and filters;
+- Server-side rendering: URL parameters can be directly consumed on the server to render the initial state, making it easier to handle server rendering;
+- Analytics and tracking: having search queries and filters directly in the URL makes it easier to track user behavior without requring additional client-side logic.
+
+### Adding the search funcionality
+
+These are the Next.js client hooks that you'll use to implement the search funcionality:
+1. useSearchParams: allows you to access the parameters of the current URL. For example, the search params for this URL */dashboard/invoices?page=1&query=pending* would look like this: *{page: 1, query: pending}*;
+2. usePathname: lets you read the current URL's pathname. For example, for the route */dashboard/invoices*, usePathname would return *'/dashboard/invoices'*;
+3. useRouter: enables navigation between routes within client components programmatically.
+
+**Here's a quick overview of the implementation steps:**
+1. Capture the user's input;
+2. Update the URL with the search params;
+3. Keep the URL in sync with the input field;
+4. Update the table to reflect the search query.
+
+### When to use the useSearchParams() hook vs. the searchParams prop?
+
+- Search is a *Client Component*, so you used the *useSearchParams() hook to access the params from the client*;
+- Table ia a *Server Component that fetches its own data*, so you *can pass the searchParams prop from the page to the component*.
+
+As a *general rule, if you want to read the parameters from the client, use useSearchParams() hook* as this avoids having to go back to the server.
+
+
+*Important: You don't want to fetch data on the client as this would expose your database secrets (remember, you're not using an API layer). Instead, you can fetch the data on the server, and pass it to the component as a prop.*
