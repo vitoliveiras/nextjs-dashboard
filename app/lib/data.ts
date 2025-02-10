@@ -8,6 +8,7 @@ import {
   Revenue,
 } from './definitions';
 import { formatCurrency } from './utils';
+import { prisma } from './prisma';
 
 const sql = postgres(process.env.POSTGRES_URL!, {ssl: 'prefer'});
 
@@ -19,7 +20,7 @@ export async function fetchRevenue() {
     console.log('Fetching revenue data...');
     await new Promise((resolve) => setTimeout(resolve, 3000));
 
-    const data = await sql<Revenue[]>`SELECT * FROM revenue`;
+    const data = await prisma.revenue.findMany();
 
     console.log('Data fetch completed after 3 seconds.');
 
