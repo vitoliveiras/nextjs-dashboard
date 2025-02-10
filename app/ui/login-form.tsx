@@ -8,8 +8,6 @@ import {
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { Button } from './button';
-import { signIn } from '@/auth';
-import { AuthError } from 'next-auth';
 import { useSearchParams } from 'next/navigation';
 import { useActionState } from 'react';
 import { authenticate } from '../lib/actions';
