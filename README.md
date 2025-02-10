@@ -15,6 +15,7 @@
 12. [Chapter 10: Partial Prerendering](#chapter-10-partial-prerendering)
 13. [Chapter 11: Adding Search and Pagination](#chapter-11-adding-search-and-pagination)
 14. [Chapter 12: Mutating Data](#chapter-12-mutating-data)
+15. [Chapter 13: Handling Errors](#chapter-13-handling-errors)
 
 ## About the Project
 
@@ -446,10 +447,22 @@ You can create dynamic route segments by *wrapping a folder's name in square bra
 
 The structure above allows you to access the route /dashboard/invoices/1/edit to update the data of the user with ID 1.
 
-## Lessons Learned
+### Lessons Learned
 1. Link a form to a Server Action (that creates an invoice);
 2. Validate the data from form to alligns with the expected types in database using Zod (a TypeScript-first validation library);
 3. How to get current time and convert it to a string;
 4. How to create a dynamic route segment;
 5. How to update a record in the database;
 6. How to delete a record in the database.
+
+## Chapter 13: Handling Errors
+
+### Handling uncaught exceptions from the server
+
+It can be handle adding the Error component to the directory. For example, in */app/dashboard/invoices/error.tsx* will catch uncaught exceptions to the invoices page.
+
+### Handling 404 errors
+
+*notFound* function can be used when you try to fetch a resource that doesn't exist.
+
+*That's something to keep in mind, notFound will take precedence over error.tsx, so you can reach out for it when you want to handle more specific errors!*
