@@ -183,13 +183,13 @@ export async function fetchInvoiceById(id: string) {
 
 export async function fetchCustomers() {
   try {
-    const customers = await sql<CustomerField[]>`
-      SELECT
-        id,
-        name
-      FROM customers
-      ORDER BY name ASC
-    `;
+    const customers = await prisma.customer.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+      orderBy: { name: 'desc' }
+    });
 
     return customers;
   } catch (err) {
