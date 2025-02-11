@@ -1,20 +1,10 @@
-// import NextAuth from 'next-auth';
-// import { authConfig } from './auth.config';
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
-// export default NextAuth(authConfig).auth;
-
-// export const config = {
-//     // specifies that it should run on specific paths
-//     matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
-// };
-
-// defines which rotes will be protected (all that init with /dashboard)
-const isProtectedRoute = createRouteMatcher(['/dashboard(.*)']);
+const isPublicRoute = createRouteMatcher(['/', '/login(.*)', '/seed']);
 
 export default clerkMiddleware(async (auth, req) => {
-    if (isProtectedRoute(req)) {
-        auth.protect(); // redirect user to the login page
+    if (!isPublicRoute(req)) {
+        await auth.protect(); // redirect user to the login page
     }
 });
 
@@ -25,4 +15,4 @@ export const config = {
       // Always run for API routes
       '/(api|trpc)(.*)',
     ],
-  }
+}
