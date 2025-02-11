@@ -1,6 +1,7 @@
 import postgres from 'postgres';
 import {
   CustomersTableType,
+  InvoiceForm,
   InvoicesTable,
   LatestInvoiceRaw,
 } from './definitions';
@@ -155,7 +156,15 @@ export async function fetchInvoiceById(id: string) {
     //   WHERE invoices.id = ${id};
     // `;
 
-    const data = await prisma.invoice.findMany({
+    // const invoice = data.map((invoice) => ({
+    //   ...invoice,
+    //   // Convert amount from cents to dollars
+    //   amount: invoice.amount / 100,
+    // }));
+
+    // return invoice[0];
+
+    const data = await prisma.invoice.findUnique({
       select: {
         id: true,
         customer_id: true,
@@ -163,15 +172,13 @@ export async function fetchInvoiceById(id: string) {
         status: true,
       },
       where: { id }
-    });
+    }) as InvoiceForm | null;
 
-    const invoice = data.map((invoice) => ({
-      ...invoice,
-      // Convert amount from cents to dollars
-      amount: invoice.amount / 100,
-    }));
+    if (data) {
+      data.amount = data.amount / 100;
+    }
 
-    return invoice[0];
+    return data;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch invoice.');
