@@ -1,3 +1,5 @@
+// next auth was replaced by clerk auth in this project
+
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { authConfig } from './auth.config';
@@ -6,8 +8,6 @@ import type { User } from '@/app/lib/definitions';
 import postgres from 'postgres';
 import bcrypt from 'bcrypt';
 import { prisma } from './app/lib/prisma';
-
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'prefer' });
 
 async function getUser(email: string): Promise<User | null> {
     try {
