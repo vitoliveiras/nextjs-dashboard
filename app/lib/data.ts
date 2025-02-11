@@ -56,8 +56,9 @@ export async function fetchCardData() {
     // You can probably combine these into a single SQL query
     // However, we are intentionally splitting them to demonstrate
     // how to initialize multiple queries in parallel with JS.
-    const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
-    const customerCountPromise = sql`SELECT COUNT(*) FROM customers`;
+    // const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
+    const invoiceCountPromise = prisma.invoice.count();
+    const customerCountPromise = prisma.customer.count();
     const invoiceStatusPromise = sql`SELECT
          SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
          SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
@@ -71,8 +72,8 @@ export async function fetchCardData() {
     ]);
 
     // gets the count property from the query result
-    const numberOfInvoices = Number(data[0][0].count ?? '0');
-    const numberOfCustomers = Number(data[1][0].count ?? '0');
+    const numberOfInvoices = Number(data[0] ?? '0');
+    const numberOfCustomers = Number(data[1] ?? '0');
     const totalPaidInvoices = formatCurrency(data[2][0].paid ?? '0');
     const totalPendingInvoices = formatCurrency(data[2][0].pending ?? '0');
 
