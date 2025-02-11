@@ -148,15 +148,25 @@ export async function fetchInvoicesPages(query: string) {
 
 export async function fetchInvoiceById(id: string) {
   try {
-    const data = await sql<InvoiceForm[]>`
-      SELECT
-        invoices.id,
-        invoices.customer_id,
-        invoices.amount,
-        invoices.status
-      FROM invoices
-      WHERE invoices.id = ${id};
-    `;
+    // const data = await sql<InvoiceForm[]>`
+    //   SELECT
+    //     invoices.id,
+    //     invoices.customer_id,
+    //     invoices.amount,
+    //     invoices.status
+    //   FROM invoices
+    //   WHERE invoices.id = ${id};
+    // `;
+
+    const data = await prisma.invoice.findMany({
+      select: {
+        id: true,
+        customer_id: true,
+        amount: true,
+        status: true,
+      },
+      where: { id }
+    });
 
     const invoice = data.map((invoice) => ({
       ...invoice,
