@@ -2,13 +2,11 @@
 
 // validation library
 import { z } from 'zod';
-import postgres from 'postgres';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
-
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'prefer' });
+import { prisma } from './prisma';
 
 // expected types from the database
 const FormSchema = z.object({
@@ -63,14 +61,23 @@ export async function createInvoice(prevState: State, formData: FormData) {
     // storage amount in cents
     const amountInCents = amount * 100;
     // get the current date
-    const date = new Date().toISOString().split('T')[0];
+    const date = new Date().toISOString();
 
     try {
         // insert data into the database
-        await sql`
-            INSERT INTO invoices (customer_id, amount, status, date)
-            VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
-        `;
+        // await sql`
+        //     INSERT INTO invoices (customer_id, amount, status, date)
+        //     VALUES (${customerId}, ${amountInCents}, ${status}, ${date})
+        // `;
+
+        await prisma.invoice.create({
+            data: {
+                customer_id: customerId,
+                amount: amountInCents,
+                status: status,
+                date: date
+            }
+        });
     } catch (error) {
         if (error instanceof Error) {
             // if a database error occurs, return a more specific error
@@ -109,11 +116,20 @@ export async function updateInvoice(id: string, prevState: State, formData: Form
     const amountInCents = amount * 100;
 
     try {
-        await sql`
-        UPDATE invoices
-        SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
-        WHERE id = ${id}
-        `;
+        // await sql`
+        // UPDATE invoices
+        // SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
+        // WHERE id = ${id}
+        // `;
+
+        await prisma.invoice.update({
+            data: {
+                customer_id: customerId,
+                amount: amountInCents,
+                status: status,
+            },
+            where: { id }
+        });
     } catch (error) {
         if (error instanceof Error) {
             // if a database error occurs, return a more specific error
@@ -131,8 +147,12 @@ export async function updateInvoice(id: string, prevState: State, formData: Form
 }
 
 export async function deleteInvoice(id: string) {
-    await sql`DELETE FROM invoices
-    WHERE id = ${id}`;
+    // await sql`DELETE FROM invoices
+    // WHERE id = ${id}`;
+
+    await prisma.invoice.delete({
+        where: { id }
+    });
     
     revalidatePath('/dashboard/invoices');
 }
