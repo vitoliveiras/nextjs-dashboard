@@ -1,3 +1,5 @@
+// next auth was replaced by clerk auth in this project
+
 import type { NextAuthConfig } from 'next-auth';
 
 // contains the configuration options for NextAuth.js
